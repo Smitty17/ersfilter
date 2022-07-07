@@ -1,0 +1,214 @@
+
+          
+version: '2.1'
+orbs:
+  aws-cli: circleci/aws-cli@2.0
+################################################################################
+# Executors
+
+# executors:
+
+#   machine-executor:
+#     machine:
+#       enabled: true
+#     working_directory: ~/aws-test
+
+################################################################################
+# Commands
+
+commands:
+
+  build-and-test:
+    description: "Build and test"
+    steps:
+      - checkout
+      - install-npm
+      - run:
+          name: "Build and test"
+          command: echo "building and testing"
+
+  restore-npm-cache:
+    description: "Restore NPM cache command"
+    steps:
+      - restore_cache:
+          keys:
+          - v4-npm-{{ checksum "package-lock.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v4-npm-
+
+  save-npm-cache:
+    description: "Save NPM cache command"
+    steps:
+      - save_cache:
+          paths:
+            - node_modules
+          key: v4-npm-{{ checksum "package-lock.json" }}
+
+  install-npm:
+    description: "Install NPM dependencies command"
+    steps:
+      - restore-npm-cache
+      - run:
+          name: Install npm dependencies
+          command: npm install
+      - save-npm-cache
+
+  setup-aws:
+    description: "Setup AWS"
+    parameters:
+      gz-environment:
+        type: string
+      fingerprints:
+        type: string
+    steps:
+      - checkout
+      - install-npm
+      - aws-cli/setup:
+          profile-name: GravityZeroIO
+      - run: 
+          name: "Setting up AWS"
+          command: |
+            /usr/local/bin/aws --version
+
+            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+            export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+
+  build-production:
+    description: "Build production"
+    parameters:
+      gz-environment:
+        type: string
+      fingerprints:
+        type: string
+    steps:
+      - checkout
+      - run: 
+          name: "Build production"
+          command: |
+            git config user.email "mark@gzerodesign.com"
+            git config user.name "Smitty17"
+            
+            npm --version
+
+            git branch
+            git checkout -b production
+
+            mv .gitignore-production .gitignore
+
+            git add .
+            git commit -m 'commit out dir'
+
+            npm run export
+
+            git rm -r --cached .
+           
+            cp -a out/. .
+            rm -r out
+
+            git add .
+            git add --force .circleci
+            git add --force _next
+            git add --force js
+            git add --force images
+            git add --force scripts
+            git add --force favicon
+            git add --force site.webmanifest.json
+            git add --force favicon.ico
+
+            git commit -m 'copy out to root'
+
+            git push --set-upstream origin production --force
+
+            COMMIT_ID=$(git rev-parse HEAD)
+            echo "export PROD_COMMIT_ID=$COMMIT_ID" >> $BASH_ENV
+
+  deploy-to-aws:
+    description: "Deploying to AWS"
+    parameters:
+      gz-environment:
+        type: string
+      fingerprints:
+        type: string
+    steps:
+      - run: 
+          name: "Setting up AWS"
+          command: |
+            /usr/local/bin/aws --version
+
+            /usr/local/bin/aws deploy create-deployment \
+              --application-name GravityZeroIO-App \
+              --deployment-config-name CodeDeployDefault.OneAtATime \
+              --deployment-group-name GravityZeroIO-DepGrp \
+              --description "My GitHub deployment demo" \
+              --github-location repository=${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME},commitId=${PROD_COMMIT_ID}
+
+
+
+           
+
+################################################################################
+# Jobs
+
+jobs:
+  build-and-test:
+    executor: aws-cli/default
+    steps:
+      - build-and-test
+
+  deploy:
+    parameters:
+      gz-environment:
+        type: string
+      fingerprints:
+        type: string
+    executor: aws-cli/default
+    steps:
+      - add_ssh_keys:
+          fingerprints: 
+            - "53:24:c9:ed:06:18:46:a2:f7:29:47:2e:58:e3:7d:01"
+      - setup-aws:
+          gz-environment: << parameters.gz-environment >>
+          fingerprints: << parameters.fingerprints >>
+      - build-production: 
+          gz-environment: << parameters.gz-environment >>
+          fingerprints: << parameters.fingerprints >>
+      - deploy-to-aws:
+          gz-environment: << parameters.gz-environment >>
+          fingerprints: << parameters.fingerprints >>
+          
+
+################################################################################
+# Workflows
+
+workflows:
+  
+  aws-cli:
+    jobs:
+      - build-and-test:
+          filters:
+            branches:
+              ignore: production
+
+      - deploy:
+          context: aws-gravity-zero-io
+          gz-environment: production
+          fingerprints: "f6:2c:9d:3f:62:c5:d5:46:39:ec:2c:27:ba:90:11:08"
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: main
+
+  # build-and-deploy:
+  #   jobs:
+  #     - build-and-test
+
+  #     - deploy:
+  #         gz-environment: production
+  #         fingerprints: "fe:23:79:63:61:2b:80:fb:4e:6d:36:d0:ff:92:fc:36"
+  #         requires:
+  #           - build-and-test
+  #         filters:
+  #           branches:
+  #             only: main
