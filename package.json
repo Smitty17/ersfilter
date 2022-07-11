@@ -10,7 +10,7 @@
     "debug": "NODE_OPTIONS='--inspect' next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "export": "next build && next export"
+    "export": "next build && next export && cp -r ./out ./docs"
   },
   "repository": {
     "type": "git",
