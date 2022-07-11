@@ -29,11 +29,13 @@ const Layout = props => {
   return (
       <div className={`layout-${props.layout}`}>
         <Head>
-          <title title="title">Gravity Zero IO</title>
+          <title title="title">ERS Filter</title>
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
           <link rel="manifest" href="/site.webmanifest.json" />
+          <link href="css/output.css" rel="stylesheet" />
+
           <meta charSet="utf-8" />
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <meta name="robots" content={process.env.ENVIRONMENT === 'production' ? "index, follow" : "noindex, nofollow" } title="robots"/>

@@ -1,14 +1,20 @@
-const colors = require('tailwindcss/colors')
-
-const ALLEY = 320; // px
 const GUT = 16; // px
 
-function scale(n) {
-  return Math.round(Math.pow(1.25, n) * 1000) / 1000;
+const [xs, sm, md, lg, xl] = [36, 48, 60, 72, 84];
+
+function lineHeight(n) {
+  const lhMax = 1.5;
+  const lhMin = 1;
+  const nMin = 0;
+  const nMax = 4;
+  if (n <= nMin) return lhMax;
+  if (n >= nMax) return lhMin;
+  const range = (lhMax - lhMin) / (nMax - nMin);
+  return (-n * range) + lhMax;
 }
 
-function alley(n) {
-  return ALLEY * n + 'px';
+function scale(n) {
+  return (Math.round(Math.pow(1.25, n) * 1000) / 1000) + "rem";
 }
 
 function gut(n) {
@@ -21,15 +27,17 @@ const spacing = {
       'gut/2': gut(0.5),
       gut: gut(1),
     };
-    const max = 1280 / GUT;
-    for (let i = 2; i < max; i += 1) guts[i + 'gut'] = gut(i);
+    const max = parseInt(gut(42)) / GUT;
+    for (let i = 2; i <= max; i += 1) guts[i + 'gut'] = gut(i);
     return guts;
   })(),
   px: {
     '0': '0',
     '1': '1px',
     '2': '2px',
+    '3': '3px',
     '4': '4px',
+    '6': '6px',
     '8': '8px',
     '10': '10px',
     '12': '12px',
@@ -49,79 +57,42 @@ const spacing = {
   },
 };
 
+function makeGridColConsts(n) {
+  return { third: gut(n / 3), sixth: gut(n / 6) };
+}
+
 module.exports = {
-  purge: [
-    './src/**/*.html',
-    './src/**/*.tsx',
+  content: [
+    './src/**/*',
   ],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    screens: {
-      sm: alley(2), //  640
-      md: alley(3), //  960
-      lg: alley(4), // 1280
+    gz: {
+      hamburgerMaxBreakpoint: parseInt(gut(md)) - 1 + "px",
+      grid: {
+        xs: makeGridColConsts(xs),
+        sm: makeGridColConsts(sm),
+        md: makeGridColConsts(md),
+        lg: makeGridColConsts(lg),
+        xl: makeGridColConsts(xl),
+      },
     },
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: '#000000',
-      white: '#FFFFFF',
-      // gray: {
-      //   100: '#f2f2f2', // These were generated from here https://maketintsandshades.com/#4b4f4f
-      //   200: '#d9d9d9',
-      //   300: '#bfc0c0',
-      //   400: '#999999',
-      //   500: '#7f8080',
-      //   600: '#2e2e2e',
-      //   700: '#2a2b2b',
-      //   800: '#222222',
-      //   900: '#191a1a',
-      //   1000: '#111111',
-      //   1100: '#080909',
-      //   light: '#e1eded',
-      //   DEFAULT: '#6C6C6C',
-      //   med: '#6a6b6b',
-      //   dark: '#2A2B2B',
-      //   xdark: '#212121'
-      // },
-      red: {
-        DEFAULT: '#ba494f',
-        100: '#f1dbdc', // These were generated from here https://maketintsandshades.com/#ba494f
-        200: '#e3b6b9',
-        300: '#d69295',
-        400: '#c86d72',
-        500: '#ba494f',
-        600: '#953a3f',
-        700: '#702c2f',
-        800: '#4a1d20',
-        900: '#250f10',
-      },
-      blue: {
-        DEFAULT: '#2180ce',
-        100: '#d3e6f5', // These were generated from here https://maketintsandshades.com/#2180ce
-        200: '#a6cceb',
-        300: '#7ab3e2',
-        400: '#4d99d8',
-        500: '#2180ce',
-        600: '#1a66a5',
-        700: '#144d7c',
-        800: '#0d3352',
-        900: '#071a29',
-      },
-      gray: colors.warmGray,
-      green: colors.green,
-      yellow: colors.amber,
-      fuchsia: colors.fuchsia,
-      pink: colors.pink,
-      purple: colors.purple
+    screens: {
+      xs: gut(xs), //  576
+      sm: gut(sm), //  769
+      md: gut(md), //  960
+      lg: gut(lg), // 1152
+      xl: gut(xl), // 1344
     },
     opacity: {
       '0': '0',
-      '33': '0.333',
+      '10': '0.1',
       '25': '0.25',
+      '33': '0.333',
       '50': '0.5',
       '66': '0.667',
       '75': '0.75',
+      '90': '0.9',
       '100': '1',
     },
     margin: (_theme, { negative }) => ({
@@ -167,6 +138,10 @@ module.exports = {
       ...spacing.guts,
       ...spacing.pc,
     },
+    spacing: {
+      ...spacing.guts,
+      ...spacing.px
+    },
     width: {
       '0': '0',
       auto: 'auto',
@@ -200,17 +175,16 @@ module.exports = {
     },
     fontSize: {
       //   rem | px
-      '2xs': scale(-2) + 'rem', 
-      xs: scale(-1) + 'rem', // 0.64  | 10.24
-      sm: scale(0) + 'rem', // 1   | 16
-      base: scale(0.5) + 'rem', // 1     | 17
-      md: scale(1) + 'rem', // 1.563 | 25
-      lg: scale(2) + 'rem', // 1.563 | 25
-      xl: scale(3) + 'rem', // 1.953 | 31
-      '2xl': scale(4) + 'rem', // 2.441 | 39
-      '3xl': scale(5) + 'rem', // 3.052 | 49
-      '4xl': scale(6) + 'rem', // 3.815 | 61
-      '5xl': scale(7) + 'rem', // 4.768 | 76
+      xs: scale(-2), // 0.64  | 10.24
+      sm: scale(-1), // 0.8   | 12.8
+      base: scale(0), // 1     | 16
+      md: scale(1), // 1.563 | 25
+      lg: scale(2), // 1.563 | 25
+      xl: scale(3), // 1.953 | 31
+      '2xl': scale(4), // 2.441 | 39
+      '3xl': scale(5), // 3.052 | 49
+      '4xl': scale(6), // 3.815 | 61
+      '5xl': scale(7), // 4.768 | 76
     },
     fontWeight: {
       thin: '200',
@@ -220,16 +194,14 @@ module.exports = {
     letterSpacing: {
       tight: '-0.025em',
       normal: '0',
-      loose: '0.025em',
+      loose: '0.15em',
     },
     lineHeight: {
-      none: '1',
-      '3tight': '1.125',
-      '2tight': '1.25',
-      tight: '1.375',
-      normal: '1.5',
-      loose: '1.625',
-      '2loose': '1.75',
+      none:     lineHeight(4), // 1
+      '3tight': lineHeight(3), // 1.125
+      '2tight': lineHeight(2), // 1.25
+      tight:    lineHeight(1), // 1.375
+      normal:   lineHeight(0), // 1.5
     },
     zIndex: {
       auto: 'auto',
@@ -240,12 +212,14 @@ module.exports = {
       'modal-close': '8',
       consent: '10',
     },
-  },
-  variants: {
     extend: {
-     backgroundOpacity: ['dark'],
+      backgroundImage: {
+        'home-hero-image': "url('/images/ers-coating.jpg')",
+        'pat-triangles': "url('/images/patterns/dark-triangles.webp')"
+      }
     }
   },
+  variants: {},
   corePlugins: {},
   plugins: [
     // { addUtilities, addComponents, addBase, addVariant, e, prefix, theme, variants, config }

@@ -1,7 +1,7 @@
 import Layout from '../components/Layout'
 import Head from 'next/head'
 
-const Pricing = (props) => {
+const About = (props) => {
 
   return (
     <Layout layout='full'>
@@ -65,4 +65,4 @@ const Pricing = (props) => {
 
 
 
-export default Pricing;
+export default About;

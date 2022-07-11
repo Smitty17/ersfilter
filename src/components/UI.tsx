@@ -18,13 +18,6 @@ const inputStyles = {
 
 export const Button = props => {
 
-  const color = `${props.color}-700` || 'blue-700';
-  const darkColor = `${props.color}-600` || 'blue-600';
-  const hover = `${props.color}-800` || 'blue-800';
-  const darkHover = `${props.color}-700` || 'blue-700';
-  const text = 'gray-100';
-  const darkText = 'white';
-
   const size = {
     xs: 'py-2 px-gut/2 text-sm',
     sm: 'py-2 px-gut/2',
@@ -34,50 +27,17 @@ export const Button = props => {
     full: 'py-gut w-full'
   };
 
-  const buttonMap = {
-    solid: `bg-${color}
-              dark:bg-${darkColor}
-              border-${color}
-              dark:border-${darkColor}
-              text-${text}
-              dark:text-${darkText}
-              border
-              inline-block
-              rounded-sm
-              hover:bg-${hover}
-              dark:hover:bg-${darkHover}
-              hover:border-${hover}
-              dark:hover:border-${darkHover}`,
-
-    outline: `bg-transparent
-              border border-${color}
-              dark:border-${darkColor}
-              text-${color}
-              dark:text-${darkColor}
-              border-2
-              inline-block
-              rounded-sm
-              hover:bg-${hover}
-              dark:hover:bg-${darkHover}
-              dark:hover:border-${darkHover}
-              hover:text-white
-              dark:hover:text-white`,
-  }
+  
   const buttonSize = size[props.size] || size['default'];
-  const buttonClass = `${buttonSize} ${buttonMap[props.kind]} ${props.className}`;
+  const buttonClass = `${buttonSize} ${props.className}`;
   return (
-    props.href ? (
-      <Link href={props.href}>
+    
+      <Link href={props.href ?? props.href}>
         <button {...props} className={buttonClass} >
           {props.label}
         </button>
       </Link>
-    ) : (
-      <button {...props} className={buttonClass} >
-        {props.label}
-      </button>
     )
-  )
 }
 
 
