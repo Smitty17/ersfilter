@@ -20,7 +20,7 @@ const Full = props => {
     btnClose.classList.toggle('hidden');
   }
   const liClass = "h-full";
-  const navClass = "h-full w-full px-3gut inline-block uppercase tracking-loose font-bold flex flex-col justify-center";
+  const navClass = "h-full w-full px-3gut uppercase tracking-loose font-bold flex flex-col justify-center";
   return (
     <section className="flex flex-col h-screen">
 
@@ -52,7 +52,7 @@ const Full = props => {
               </a>
           </li>
           <li className={liClass}>
-            <a onClick={toggleNav} className="md:hidden h-full w-5gut relative h-5gut right-0 top-0 flex items-center justify-center text-xl text-black hover:text-gray-800 dark:text-white dark:hover:text-gray-200">
+            <a onClick={toggleNav} className="md:hidden h-full w-5gut relative right-0 top-0 flex items-center justify-center text-xl text-black hover:text-gray-800 dark:text-white dark:hover:text-gray-200">
               <FontAwesomeIcon id="btn-open" className="z-modal-close " icon={faBars} />
               <FontAwesomeIcon id="btn-close" className="hidden z-modal-close fixed " icon={faTimes} />
             </a>
