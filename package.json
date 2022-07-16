@@ -10,8 +10,8 @@
     "debug": "NODE_OPTIONS='--inspect' next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "clean": "rm -r ./out && rm -r ./docs",
-    "export": "npm run clean && next build && next export && cp -r ./out ./docs"
+    "clean": "rm -r out && rm -r docs",
+    "export": "next build && next export && cp -r ./out ./docs && touch ./docs/.no-jekyll && git commit -am 'add no jekyll' &&  rm -r docs/out"
   },
   "repository": {
     "type": "git",
