@@ -3,6 +3,7 @@ import DarkModeToggle from "../components/DarkMode";
 import { LogoERSFilter } from '../components/Icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link';
 
 function MyImage() {
   return <img src="/images/gz-logo-square.svg" width="80" alt="my image" />
@@ -19,44 +20,36 @@ const Full = props => {
     btnClose.classList.toggle('hidden');
   }
   const liClass = "h-full";
-  const navClass = "h-full w-full px-3gut inline-block uppercase tracking-loose font-bold";
+  const navClass = "h-full w-full px-3gut inline-block uppercase tracking-loose font-bold flex flex-col justify-center";
   return (
     <section className="flex flex-col h-screen">
 
       <nav id="navigation">
         <ul className="z-modal relative w-full h-6gut flex justify-center items-center bg-gray-200 dark:bg-gray-900">
           <li className={liClass}>
-            <Button
-              className={navClass}
-              label="Home"
-              href="/"
-              icon="/icon.jpg" />
+            <a className={navClass} href="/">
+                Home
+            </a>
           </li>
           <li className={liClass}>
-            <Button
-              className={navClass}
-              label="Services"
-              href="/services"
-              icon="/icon.jpg" />
+            <a className={navClass}
+              href="/services">Services
+            </a>
           </li>
           <li className="h-full">
-            <a href="/" id="gz-logo" className="w-7gut h-full inline-block py-gut">
+            <a href="/" id="gz-logo" className="w-10gut h-full inline-block py-gut">
               <LogoERSFilter />
             </a>
           </li>
           <li className={liClass}>
-            <Button
-              className={navClass}
-              label="About"
-              href="/about"
-              icon="/icon.jpg" />
+            <a className={navClass}
+              href="/about">About
+            </a>
           </li>
           <li className={liClass}>
-            <Button
-              className={navClass}
-              label="Contact"
-              href="/contact"
-              icon="/icon.jpg" />
+            <a className={navClass}
+              href="/contact">Contact
+              </a>
           </li>
           <li className={liClass}>
             <a onClick={toggleNav} className="md:hidden h-full w-5gut relative h-5gut right-0 top-0 flex items-center justify-center text-xl text-black hover:text-gray-800 dark:text-white dark:hover:text-gray-200">

@@ -1,6 +1,6 @@
 import Layout from '../components/Layout'
 import Head from 'next/head'
-import { py_lg, hd_md, hd_2xl, hd_xl, buttonOrange } from '../components/Css'
+import { py_lg, py_xl, hd_md, hd_2xl, hd_xl, buttonOrange } from '../components/Css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHardHat, faExchangeAlt, faPaintRoller, faWater } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../components/UI';
@@ -88,7 +88,7 @@ const ContactBar = (props) => {
 }
 const Index = (props) => {
 
-  const servicesClass = "shadow-lg rounded p-2gut flex flex-col";
+  const servicesClass = "shadow-lg rounded p-2gut flex flex-col bg-white";
   return (
     <Layout layout='full'>
       <Head>
@@ -97,14 +97,14 @@ const Index = (props) => {
       <section className="dark:bg-gray-800 bg-red-300 bg-cover bg-center bg-w-full bg-h-full bg-home-hero-image">
         <div className="grid-container flex flex-wrap items-center relative">
           <div className="absolute inset-0 w-full h-full bg-black/75" />
-          <div className={`z-pop w-full order-1 md:order-2 text-center mb-3gut ${py_lg}`}>
+          <div className={`z-pop w-full order-1 md:order-2 text-center mb-3gut ${py_xl}`}>
             <h1 className={`${hd_2xl} text-white`}>ERS Industrial Services, INC.</h1>
           </div>
         </div>
       </section>
 
 
-      <section className="bg-slate-200 bg-cover bg-center bg-w-full bg-h-full">
+      <section className="bg-slate-300 bg-cover bg-center bg-w-full bg-h-full">
         <div className={`grid-container items-center ${py_lg} px-gut relative`}>
           <div className="col-start-main-start col-end-main-end md:col-end-main-2/3">
             <h2 className={`${hd_xl} mb-2gut`}>Services</h2>
@@ -113,17 +113,22 @@ const Index = (props) => {
             </p>
           </div>
           <div className="col-start-main-start col-end-main-end grid grid-cols-1 sm:grid-cols-2 gap-4gut lg:gap-8gut">
+            
             <div className={servicesClass}>
               <FontAwesomeIcon className="mb-gut" icon={faHardHat} size="2x" />
               <h3 className={`${hd_md} mb-gut`}>Filter Inspection</h3>
               <p className="mb-2gut flex-grow">
                 We provide full service Filter Media inspections and testing to help prevent costly shutdowns during critical times.
               </p>
-              <Button
-                className={buttonOrange}
-                href="/services"
-                label="Learn More"
-              />
+              <div className="flex-none">
+                <Button
+                  size="lg"
+                  className={buttonOrange}
+                  href="/services"
+                  label="Learn More"
+                />
+              </div>
+             
             </div>
 
             <div className={servicesClass}>
@@ -132,11 +137,14 @@ const Index = (props) => {
               <p className="mb-2gut flex-grow">
                 We specialize in filter media change outs on all types of filters.
               </p>
-              <Button
-                className={buttonOrange}
-                href="/services"
-                label="Learn More"
-              />
+              <div className="flex-none">
+                <Button
+                  size="lg"
+                  className={buttonOrange}
+                  href="/services"
+                  label="Learn More"
+                />
+              </div>
             </div>
 
             <div className={servicesClass}>
@@ -145,11 +153,14 @@ const Index = (props) => {
               <p className="mb-2gut flex-grow">
                 We apply 100% Epoxys and Elastomeric Polyurethanes on concrete and steel in Water Treatment and Wastewater Treatment Facilities.
               </p>
-              <Button
-                className={buttonOrange}
-                href="/services"
-                label="Learn More"
-              />
+              <div className="flex-none">
+                <Button
+                  size="lg"
+                  className={buttonOrange}
+                  href="/services"
+                  label="Learn More"
+                />
+              </div>
             </div>
 
             <div className={servicesClass}>
@@ -158,11 +169,14 @@ const Index = (props) => {
               <p className="mb-2gut flex-grow">
                 We specialize in repair of all major underdrain systems in water and wastewater applications.
               </p>
-              <Button
-                className={buttonOrange}
-                href="/services"
-                label="Learn More"
-              />
+              <div className="flex-none">
+                <Button
+                  size="lg"
+                  className={buttonOrange}
+                  href="/services"
+                  label="Learn More"
+                />
+              </div>
             </div>
           </div>
         </div>

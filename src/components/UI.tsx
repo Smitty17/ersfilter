@@ -19,23 +19,23 @@ const inputStyles = {
 export const Button = props => {
 
   const size = {
-    xs: 'py-2 px-gut/2 text-sm',
-    sm: 'py-2 px-gut/2',
-    default: 'py-4 px-gut',
-    md: 'py-gut/2 px-2gut',
+    xs: 'py-4 px-gut/2 text-sm',
+    sm: 'py-8 px-gut/2',
+    default: 'py-gut/2 px-gut',
+    md: 'py-gut px-2gut',
     lg: 'py-gut px-3gut',
     full: 'py-gut w-full'
   };
 
   
   const buttonSize = size[props.size] || size['default'];
-  const buttonClass = `${buttonSize} ${props.className}`;
+  const buttonClass = `${buttonSize} ${props.className} inline-block text-center rounded text-white dark:text-black hover:text-white dark:hover:text-black`;
   return (
     
-      <Link href={props.href ?? props.href}>
-        <button {...props} className={buttonClass} >
+      <Link href={props.href ?? props.href} passHref>
+        <a {...props} className={buttonClass} >
           {props.label}
-        </button>
+        </a>
       </Link>
     )
 }
