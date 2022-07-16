@@ -6,7 +6,8 @@ Website - 2022
 
 ## Deployment
 - `git checkout main`
-- `npm run clean` // removes `/docs/` and `/out` directories
-- `npm run export` // this will build a static version of your app
-- add and commit the changes
-- `git push`
+- `npm run clean` // removes `./docs/` and `./out` directories if they exist
+- `npm run export` // this will build a static version of your app and copy the `./out` dir to `./docs`
+- `git add .`
+- `git commit -m 'commit msg'`
+- `git push`git 
